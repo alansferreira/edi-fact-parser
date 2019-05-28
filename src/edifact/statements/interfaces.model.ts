@@ -145,7 +145,7 @@ export interface IInterchange {
 export interface IParser<T> {
     
     deserialize: (content: string) => T[] | T | null
-    serialize: (obj: T) => string | null
+    serialize: (obj: T[]) => string | null
 
 }
 

@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { IParser, IDataSegment, IDataElement} from "./interfaces.model";
-import { RegexUtil } from "../../regex.util";
+import { RegexUtil } from "../../util/regex.util";
 import { DataElementParser } from "./data-element.parser";
 
 
@@ -62,8 +62,13 @@ export class DataSegmentParser implements IParser<IDataSegment> {
 
     }
 
-    serialize(obj: IDataSegment): string | null {
-
-        return null;
+    serialize(obj: IDataSegment[]): string | null {
+        return obj.map((ds: IDataSegment) => {
+            if (ds.tag && ds.tag.value){
+                return `${ds.tag.code}:${ds.tag.value}+${this.dataElementParser.serialize(ds.dataElements || [])}`;
+            } else {
+                return `${ds.tag.code}+${this.dataElementParser.serialize(ds.dataElements || [])}`;
+            }
+        }).join('\'\n') + '\'';
     }
 }

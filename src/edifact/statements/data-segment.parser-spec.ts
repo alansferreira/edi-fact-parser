@@ -18,7 +18,7 @@ describe('Test Generic Statement', () => {
         "UNT+.......data.........'"
     ];
 
-    it('should parse generic statements  ', async () => {        
+    it('should deserialize generic statements  ', async () => {        
         try {
             sampleGenericStetements.map((stmt) => {
                 const result = dataSegmentParser.deserialize(stmt);
@@ -38,7 +38,7 @@ describe('Test Generic Statement', () => {
         }
     });
 
-    it('should parse full edifact file  ', async () => {        
+    it('should deserialize full edifact file  ', async () => {        
         try {
             const sampleFile1 = 'samples/sample-1.edi';
             const fullcontent = fs.readFileSync(sampleFile1).toString();
@@ -55,6 +55,26 @@ describe('Test Generic Statement', () => {
             //     expect(ds.dataElements[0].singleValue).to.eq(".......data.........", `no value founded in '${sampleFile1}'!`);
             // }
 
+        } catch (error) {
+            throw new Error(error);
+        }
+    });
+    it('should serialize generic simple and composite data elements', async () => {        
+        try {
+            const sampleFile1 = 'samples/sample-1.edi';
+            const outSampleFile1 = 'samples/out-sample-1.edi';
+
+            const fullcontent = fs.readFileSync(sampleFile1).toString();
+            
+            const dss = dataSegmentParser.deserialize(fullcontent);
+            
+            const reSerialized = dataSegmentParser.serialize(dss);
+            
+            fs.writeFileSync(outSampleFile1, reSerialized);
+
+            expect(reSerialized).to.not.null;
+            expect(reSerialized).to.equal(fullcontent, `serialization is diferent of original data! '${fullcontent}'!`);
+            
         } catch (error) {
             throw new Error(error);
         }

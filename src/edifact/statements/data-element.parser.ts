@@ -24,8 +24,13 @@ export class DataElementParser implements IParser<IDataElement> {
         });
     }
 
-    serialize(obj: IDataElement): string | null {
-
-        return null;
+    serialize(obj: IDataElement[]): string | null {
+        return obj.map((de: IDataElement) => {
+            if (!de.isComposite){
+                return de.singleValue;
+            } 
+            return (de.compositeValue || []).join(':');
+        })
+        .join('+');
     }
 }

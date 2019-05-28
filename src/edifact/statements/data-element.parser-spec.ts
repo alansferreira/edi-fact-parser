@@ -8,7 +8,7 @@ import { DataElementParser } from './data-element.parser';
 describe('Test Data Element Parser', () => {
     const dataElementParser = Container.get(DataElementParser);
 
-    it('should parse generic simple and composite data elements', async () => {        
+    it('should deserialize generic simple and composite data elements', async () => {        
         try {
             const dataElement = 'simpledata+composite:data+super:composite:data';
 
@@ -36,4 +36,22 @@ describe('Test Data Element Parser', () => {
             throw new Error(error);
         }
     });
+
+
+    it('should serialize generic simple and composite data elements', async () => {        
+        try {
+            const dataElement = 'simpledata+composite:data+super:composite:data';
+
+            const des = dataElementParser.deserialize(dataElement);
+            
+            const reSerialized = dataElementParser.serialize(des);
+
+            expect(reSerialized).to.not.null;
+            expect(reSerialized).to.equal(dataElement, `serialization is diferent of original data! '${dataElement}'!`);
+            
+        } catch (error) {
+            throw new Error(error);
+        }
+    });
+
 });
