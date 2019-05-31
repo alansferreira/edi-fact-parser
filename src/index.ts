@@ -1,2 +1,2 @@
 import 'reflect-metadata';
-export * from './edifact/statements';
+export * from './edifact/parser';
